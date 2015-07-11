@@ -1,38 +1,45 @@
 package org.thesheeps.ppg;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import org.thesheeps.ppg.utils.AES;
+import org.thesheeps.ppg.utils.deviceUUID;
+import org.thesheeps.ppg.utils.fileHelper;
 
+import java.io.File;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
-    int maxWrongPassword = 3;
+    private static final String salt = "The$HEPPS#1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final EditText editText = (EditText) findViewById(R.id.editText);
-        editText.setOnClickListener(new View.OnClickListener() {
+        File settings = new File(getFilesDir().toString() + "/settings");
+        if (!settings.exists())
+            firstRunInitialization();
+
+        final EditText editTextPass = (EditText) findViewById(R.id.editTextPass);
+        editTextPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!editText.getText().toString().equals("")) {
+                if (!editTextPass.getText().toString().equals(""))
                     try {
-                        PG();
-                    } catch (NoSuchAlgorithmException e) {
-                        e.printStackTrace();
+                        PPG();
+                    } catch (IOException | GeneralSecurityException e) {
+                        Log.e("PPG_MainActivity", "PPG: ", e);
                     }
-                }
             }
         });
     }
@@ -53,38 +60,45 @@ public class MainActivity extends Activity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
         }
-
         return super.onOptionsItemSelected(item);
     }
 
-    public void PG() throws NoSuchAlgorithmException {
+    private void firstRunInitialization() {
 
-        EditText editText = (EditText) findViewById(R.id.editText);
-        String string = editText.getText().toString();
+        File settingsFile = new File(getFilesDir(), "settings");
+        try {
+            fileHelper.writeToFile(settingsFile, AES.encrypt(deviceUUID.getUUID(this) + "1234" + salt,
+                    "@b4J&Afv0G%2x$SddS1D6h3@yepDo&ja"), false); // Default Password abd  Master
+            // Secret.
 
-        MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-        messageDigest.update(string.getBytes());
-
-        byte bytes[] = messageDigest.digest();
-
-        StringBuilder sb = new StringBuilder();
-        for (byte aByte : bytes) {
-            sb.append(Integer.toString((aByte & 0xff) + 0x100, 16).substring(1));
+            fileHelper.writeToFile(settingsFile, "\n7", true); // Default length of output password(7)
+        } catch (IOException e) {
+            Log.e("PPG_MainActivity", "Can't access file: ", e);
+        } catch (GeneralSecurityException e) {
+            Log.e("PPG", "Security Exception: ", e);
         }
+    }
 
-        TextView textView = (TextView) findViewById(R.id.textView);
-        if (sb.toString().equals
-                ("03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4")){ //1234
-            Intent intent = new Intent(this,WebViewActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-            finish();
-        }
-        else textView.setText("Oops!");
+    private void PPG() throws IOException, GeneralSecurityException {
 
-        maxWrongPassword--;
-        if(maxWrongPassword==0) finish();
+        File settingsFile = new File(getFilesDir(), "settings");
+
+        EditText editTextPass = (EditText) findViewById(R.id.editTextPass);
+        String password = editTextPass.getText().toString();
+
+        String secret = AES.decrypt(deviceUUID.getUUID(this) + password + salt, fileHelper.readFromFile
+                (settingsFile).get(0));
+
+        String length = fileHelper.readFromFile(settingsFile).get(1);
+
+        Intent intent = new Intent(this, WebViewActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("LENGTH", length);
+        intent.putExtra("SECRET", secret);
+        startActivity(intent);
+        finish();
     }
 }
