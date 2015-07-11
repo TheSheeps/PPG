@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">PPG</string>
-
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+    <!-- Settings Activity -->
+    <string name="settings_app_password">Application Password</string>
+    <string name="settings_old_password">Old Password:</string>
+    <string name="settings_new_password">New Password:</string>
+    <string name="settings_confirm_password">Confirm Password:</string>
+    <string name="settings_master_key">Master Secret Key</string>
+    <string name="settings_save">Save Settings</string>
+    <!-- -->
 </resources>

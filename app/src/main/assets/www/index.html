@@ -57,8 +57,8 @@
         github.com/TheSheeps/PPG
         */
         var _do = false;
-        var _passLength = 7; // the result is _passLength + 2
-        var _s = "npRUCH1oNczEdgNgrbqfj5hMnTiu46HwRxXPeun83yEZ663ditM";
+        var _passLength = $LENGTH$; // the result is _passLength + 2
+        var _s = "$SECRET$";
 
         function justDo() {
             var _r = CryptoJS.SHA256(_s + document.getElementById("s1").value.toLowerCase()).toString(CryptoJS.enc.Base64);
