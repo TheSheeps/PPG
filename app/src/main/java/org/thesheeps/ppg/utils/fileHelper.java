@@ -25,14 +25,15 @@ public class fileHelper {
 
         ArrayList<String> lines = new ArrayList<>();
 
-        FileInputStream in = new FileInputStream(file);
-        BufferedReader buf = new BufferedReader(new InputStreamReader(in));
+        FileInputStream fis = new FileInputStream(file);
+        BufferedReader buf = new BufferedReader(new InputStreamReader(fis));
 
         String line;
         while ((line = buf.readLine()) != null) {
             lines.add(line);
         }
 
+        fis.close();
         buf.close();
         return lines;
     }
