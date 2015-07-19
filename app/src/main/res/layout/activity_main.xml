@@ -15,11 +15,11 @@
         android:ems="10"
         android:id="@+id/editTextPass"
         android:labelFor="@id/editTextPass"
-        android:gravity="center"
         android:singleLine="true"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:focusable="true">
+        android:focusable="true"
+        android:hint="@string/settings_password">
     </EditText>
 
     <TextView

@@ -1,8 +1,15 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="BlueThemeNoActionBar" parent="@android:style/Theme.Holo.Light.NoActionBar">
+        <item name="android:actionBarStyle">@style/BlueActionBar</item>
+    </style>
+
+    <style name="BlueTheme" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+        <item name="android:actionBarStyle">@style/BlueActionBar</item>
+    </style>
+
+    <style name="BlueActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@drawable/ab_blue</item>
     </style>
 
 </resources>

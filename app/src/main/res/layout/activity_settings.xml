@@ -1,128 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/settings_app_password"
-        android:padding="20dp"
-        android:gravity="center"
-        android:textStyle="bold"/>
-
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp">
+        android:orientation="vertical">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/settings_old_password"/>
-
-        <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:ems="10"
-            android:id="@+id/editTextOldPassword"
-            android:labelFor="@id/editTextOldPassword"/>
+            android:text="@string/settings_app_password"
+            android:padding="20dp"
+            android:gravity="center"
+            android:textStyle="bold"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/settings_new_password"/>
-
-        <EditText
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:ems="10"
-            android:id="@+id/editTextNewPassword"
-            android:labelFor="@id/editTextNewPassword"/>
+            android:orientation="vertical"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_new_password"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:id="@+id/editTextNewPassword"
+                android:labelFor="@id/editTextNewPassword"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_confirm_password"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:id="@+id/editTextConfirmPassword"
+                android:labelFor="@id/editTextConfirmPassword"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:id="@+id/textViewError"
+                android:textColor="#ffff0000"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"/>
+        </LinearLayout>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/settings_confirm_password"/>
-
-        <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:ems="10"
-            android:id="@+id/editTextConfirmPassword"
-            android:labelFor="@id/editTextConfirmPassword"/>
+            android:text="@string/settings_ppg"
+            android:padding="20dp"
+            android:gravity="center"
+            android:textStyle="bold"/>
 
-        <TextView
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_master_key"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textVisiblePassword"
+                android:ems="10"
+                android:id="@+id/editTextMasterKey"
+                android:labelFor="@id/editTextMasterKey"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_secret_length"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/editTextLength"
+                android:labelFor="@id/editTextLength"/>
+        </LinearLayout>
+
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/textViewError"
-            android:textColor="#ffff0000"
-            android:paddingStart="4dp"
-            android:paddingEnd="4dp"/>
+            android:text="@string/settings_save"
+            android:id="@+id/buttonSaveSettings"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:paddingStart="25dp"
+            android:paddingEnd="25dp"
+            android:textSize="8pt"
+            android:background="@drawable/button"
+            android:textColor="#ffffff"
+            android:onClick="saveSettings"/>
     </LinearLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/settings_ppg"
-        android:padding="20dp"
-        android:gravity="center"
-        android:textStyle="bold"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:layout_marginBottom="10dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/settings_master_key"/>
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textVisiblePassword"
-            android:ems="10"
-            android:id="@+id/editTextMasterKey"
-            android:labelFor="@id/editTextMasterKey"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/settings_secret_length"/>
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:ems="10"
-            android:id="@+id/editTextLength"
-            android:labelFor="@id/editTextLength"/>
-    </LinearLayout>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/settings_save"
-        android:id="@+id/buttonSaveSettings"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
-        android:paddingStart="25dp"
-        android:paddingEnd="25dp"
-        android:textSize="8pt"
-        android:onClick="saveSettings"/>
-
-    <!--android:background="@drawable/button"-->
-    <!--android:textColor="#ffffff"-->
-</LinearLayout>
+</ScrollView>

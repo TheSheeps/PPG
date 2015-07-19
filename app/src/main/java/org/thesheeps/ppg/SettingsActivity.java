@@ -1,8 +1,10 @@
 package org.thesheeps.ppg;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.NavUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -16,18 +18,22 @@ import java.io.File;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends Activity {
 
     private static final String salt = "The$HEPPS#1";
     private static int maxWrongPassword = 3;
+    String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        assert getSupportActionBar() != null;
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        assert getActionBar() != null;
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Bundle bundle = getIntent().getExtras();
+        password = bundle.getString("PASSWORD");
 
         File settingsFile = new File(getFilesDir(), "settings");
 
@@ -42,12 +48,24 @@ public class SettingsActivity extends AppCompatActivity {
         editTextLength.setText(length);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     public void saveSettings(View view) {
 
         TextView textViewError = (TextView) findViewById(R.id.textViewError);
         textViewError.setText("");
 
-        checkPasswordMatch();
+        if (!checkPasswordMatch())
+            return;
 
         if (saveNewSettings()){
             Toast.makeText(this,"Saved successfully",Toast.LENGTH_SHORT).show();
@@ -79,9 +97,6 @@ public class SettingsActivity extends AppCompatActivity {
         String secret = readOldSecret();
         if (secret==null)
             return false;
-
-        EditText editTextPass = (EditText) findViewById(R.id.editTextOldPassword);
-        String password = editTextPass.getText().toString();
 
         EditText editTextNewPass = (EditText) findViewById(R.id.editTextNewPassword);
         String newPass = editTextNewPass.getText().toString();
@@ -119,9 +134,6 @@ public class SettingsActivity extends AppCompatActivity {
 
         File settingsFile = new File(getFilesDir(), "settings");
 
-        EditText editTextPass = (EditText) findViewById(R.id.editTextOldPassword);
-        String password = editTextPass.getText().toString();
-
         String secret = null;
         try {
             secret = AES.decrypt(deviceUUID.getUUID(this) + password + salt, fileHelper.readFromFile
@@ -144,5 +156,11 @@ public class SettingsActivity extends AppCompatActivity {
             return null;
         }
         return secret;
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        finish();
     }
 }
