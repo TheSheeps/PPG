@@ -1,12 +1,10 @@
 package org.thesheeps.ppg;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -19,7 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     private static final String salt = "The$HEPPS#1";
     private static int maxWrongPassword = 3;
@@ -50,28 +48,6 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private void firstRunInitialization() {
@@ -123,8 +99,19 @@ public class MainActivity extends AppCompatActivity {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra("LENGTH", length);
             intent.putExtra("SECRET", secret);
+            intent.putExtra("PASSWORD", password);
             startActivity(intent);
-            finish();
         }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        EditText editTextPass = (EditText) findViewById(R.id.editTextPass);
+        editTextPass.setText("");
+
+        TextView textViewError = (TextView) findViewById(R.id.textViewError);
+        textViewError.setText("");
     }
 }

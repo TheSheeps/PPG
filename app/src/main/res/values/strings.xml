@@ -11,5 +11,6 @@
     <string name="settings_master_key">Master Secret Key:</string>
     <string name="settings_secret_length">Secret Length:</string>
     <string name="settings_save">Save Settings</string>
+    <string name="settings_password">Password</string>
     <!-- -->
 </resources>
