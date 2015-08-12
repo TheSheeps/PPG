@@ -13,6 +13,7 @@ import java.util.UUID;
 
 public class deviceUUID {
 
+    private static final String LOGTAG = "PPG_deviceUUID";
     private static String sID = null;
 
     public static String getUUID(Context context) {
@@ -27,7 +28,7 @@ public class deviceUUID {
                     fileHelper.writeToFile(pid, UUID.randomUUID().toString(), false);
                 sID = fileHelper.readFromFile(pid).get(0);
             } catch (Exception e) {
-                Log.e("PPG_deviceUUID", "Can't access file: ", e);
+                Log.e(LOGTAG, "Can't access file: ", e);
             }
         }
         return sID;

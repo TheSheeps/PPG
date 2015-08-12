@@ -61,6 +61,10 @@
         var _s = "$SECRET$";
 
         function justDo() {
+            if(document.getElementById("s1").value.length == 0) {
+               document.getElementById("s2").value = "";
+               return;
+            }
             var _r = CryptoJS.SHA256(_s + document.getElementById("s1").value.toLowerCase()).toString(CryptoJS.enc.Base64);
             _r = _r.replace(/=/g, '');
             _r = "1@" + _r.substring(_r.length - _passLength); //1@ is fixed to fit in forced password patterns in websites

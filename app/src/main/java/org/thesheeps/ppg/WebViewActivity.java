@@ -17,6 +17,7 @@ import java.io.InputStreamReader;
 
 public class WebViewActivity extends Activity {
 
+    private static final String LOGTAG = "PPG_WebView";
     String length;
     String secret;
     String password;
@@ -32,6 +33,7 @@ public class WebViewActivity extends Activity {
         secret = bundle.getString("SECRET");
         password = bundle.getString("PASSWORD");
 
+        // region Put secret and length on html file.
         String line;
         String html = null;
         try {
@@ -46,13 +48,14 @@ public class WebViewActivity extends Activity {
 
             html = sb.toString();
         } catch (IOException e) {
-            Log.e("PPG_WebView", "Can't access file: ", e);
+            Log.e(LOGTAG, "Can't access file: ", e);
         }
 
         if (html != null) {
             html = html.replace("$LENGTH$", length);
             html = html.replace("$SECRET$", secret);
         }
+        // endregion
 
         WebView webView = (WebView) findViewById(R.id.webView);
         WebSettings webSettings = webView.getSettings();
@@ -63,19 +66,14 @@ public class WebViewActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent intent = new Intent(this, SettingsActivity.class);
             intent.putExtra("PASSWORD", password);
@@ -85,8 +83,8 @@ public class WebViewActivity extends Activity {
     }
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
+    protected void onStop() {
+        super.onStop();
         finish();
     }
 }

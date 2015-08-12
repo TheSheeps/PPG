@@ -20,6 +20,7 @@ import java.security.GeneralSecurityException;
 public class MainActivity extends Activity {
 
     private static final String salt = "The$HEPPS#1";
+    private static final String LOGTAG = "PPG_MainActivity";
     private static int maxWrongPassword = 3;
 
     @Override
@@ -27,6 +28,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Inflate settings file with default values.
         File settings = new File(getFilesDir().toString() + "/settings");
         if (!settings.exists())
             firstRunInitialization();
@@ -37,12 +39,12 @@ public class MainActivity extends Activity {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
 
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
-                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) { // Enter key pressed.
 
                     try {
                         PPG();
                     } catch (IOException e) {
-                        Log.e("PPG_MainActivity", "Can't access file: ", e);
+                        Log.e(LOGTAG, "Can't access file: ", e);
                     }
                 }
                 return false;
@@ -55,15 +57,16 @@ public class MainActivity extends Activity {
         File settingsFile = new File(getFilesDir(), "settings");
         try {
             fileHelper.writeToFile(settingsFile, AES.encrypt(deviceUUID.getUUID(this) + "1234" + salt,
-                    "@b4J&Afv0G%2x$SddS1D6h3@yepDo&ja"), false); // Default Master Secret.
+                    "@b4J&Afv0G%2x$SddS1D6h3@yepDo&ja"), false); // Default login password.
+            // Default Master Secret.
 
             fileHelper.writeToFile(settingsFile, "\n7", true); // Default length of output password(7)
         }
         catch (IOException e) {
-            Log.e("PPG_MainActivity", "Can't access file: ", e);
+            Log.e(LOGTAG, "Can't access file: ", e);
         }
         catch (GeneralSecurityException e) {
-            Log.e("PPG_MainActivity", "Security Exception: ", e);
+            Log.e(LOGTAG, "Security Exception: ", e);
         }
     }
 
@@ -79,14 +82,14 @@ public class MainActivity extends Activity {
             secret = AES.decrypt(deviceUUID.getUUID(this) + password + salt, fileHelper.readFromFile
                     (settingsFile).get(0));
         } catch (GeneralSecurityException e) {
-            Log.e("PPG_MainActivity","Security Exception: ", e);
+            Log.e(LOGTAG, "Security Exception: ", e);
 
             maxWrongPassword--;
             if(maxWrongPassword == 0)
                 finish();
             else{
                 TextView textViewError = (TextView) findViewById(R.id.textViewError);
-                textViewError.setText("Oops!");
+                textViewError.setText(R.string.main_oops);
 
                 return;
             }
@@ -105,8 +108,8 @@ public class MainActivity extends Activity {
     }
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
+    protected void onStop() {
+        super.onStop();
 
         EditText editTextPass = (EditText) findViewById(R.id.editTextPass);
         editTextPass.setText("");

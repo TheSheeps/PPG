@@ -2,7 +2,6 @@ package org.thesheeps.ppg;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +20,7 @@ import java.security.GeneralSecurityException;
 public class SettingsActivity extends Activity {
 
     private static final String salt = "The$HEPPS#1";
+    private static final String LOGTAG = "PPG_SettingsActivity";
     private static int maxWrongPassword = 3;
     String password;
 
@@ -41,21 +41,18 @@ public class SettingsActivity extends Activity {
         try {
             length = fileHelper.readFromFile(settingsFile).get(1);
         } catch (IOException e) {
-            Log.e("PPG_SettingsActivity ", "Can't access file: ", e);
+            Log.e(LOGTAG, "Can't access file: ", e);
         }
 
         EditText editTextLength = (EditText) findViewById(R.id.editTextLength);
         editTextLength.setText(length);
     }
 
+    // Respond to the action bar's Up/Home button
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
-            case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
-                return true;
-        }
+        if (item.getItemId() == android.R.id.home)
+            finish();
         return super.onOptionsItemSelected(item);
     }
 
@@ -68,7 +65,7 @@ public class SettingsActivity extends Activity {
             return;
 
         if (saveNewSettings()){
-            Toast.makeText(this,"Saved successfully",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.settings_class_saved_successfully, Toast.LENGTH_SHORT).show();
             finish();
         }
     }
@@ -83,7 +80,7 @@ public class SettingsActivity extends Activity {
 
         if (!newPass.equals(confirmPass)){
             TextView textViewError = (TextView) findViewById(R.id.textViewError);
-            textViewError.setText("Passwords did not match.");
+            textViewError.setText(R.string.settings_class_password_match);
 
             return false;
         }
@@ -120,11 +117,11 @@ public class SettingsActivity extends Activity {
             fileHelper.writeToFile(settingsFile, "\n" + length, true);
         }
         catch (IOException e) {
-            Log.e("PPG_SettingsActivity", "Can't access file: ", e);
+            Log.e(LOGTAG, "Can't access file: ", e);
             return false;
         }
         catch (GeneralSecurityException e) {
-            Log.e("PPG_SettingsActivity", "Security Exception: ", e);
+            Log.e(LOGTAG, "Security Exception: ", e);
             return false;
         }
         return true;
@@ -134,33 +131,25 @@ public class SettingsActivity extends Activity {
 
         File settingsFile = new File(getFilesDir(), "settings");
 
-        String secret = null;
+        String secret;
         try {
             secret = AES.decrypt(deviceUUID.getUUID(this) + password + salt, fileHelper.readFromFile
                     (settingsFile).get(0));
         }
         catch (GeneralSecurityException e) {
-            Log.e("PPG_SettingsActivity", "Security Exception: ", e);
-
-            maxWrongPassword--;
-            if(maxWrongPassword == 0)
-                finish();
-            else{
-                TextView textViewError = (TextView) findViewById(R.id.textViewError);
-                textViewError.setText("The entered password is incorrect.");
-                return null;
-            }
+            Log.e(LOGTAG, "Security Exception: ", e);
+            return null;
         }
         catch (IOException e) {
-            Log.e("PPG_SettingsActivity ", "Can't access file: ", e);
+            Log.e(LOGTAG, "Can't access file: ", e);
             return null;
         }
         return secret;
     }
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
+    protected void onStop() {
+        super.onStop();
         finish();
     }
 }
