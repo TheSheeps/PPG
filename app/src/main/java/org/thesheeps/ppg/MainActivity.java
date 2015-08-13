@@ -39,7 +39,7 @@ public class MainActivity extends Activity {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
 
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
-                        (keyCode == KeyEvent.KEYCODE_ENTER)) { // Enter key pressed.
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) { // On "Enter" key pressed.
 
                     try {
                         PPG();
@@ -56,11 +56,14 @@ public class MainActivity extends Activity {
 
         File settingsFile = new File(getFilesDir(), "settings");
         try {
-            fileHelper.writeToFile(settingsFile, AES.encrypt(deviceUUID.getUUID(this) + "1234" + salt,
-                    "@b4J&Afv0G%2x$SddS1D6h3@yepDo&ja"), false); // Default login password.
-            // Default Master Secret.
+            // Default login password: 0000.
+            // Default Master Secret: @b4J&Afv0G%2x$SddS1D6h3@yepDo&ja.
+            fileHelper.writeToFile(settingsFile, AES.encrypt(deviceUUID.getUUID(this) + "0000" +
+                            salt,
+                    "@b4J&Afv0G%2x$SddS1D6h3@yepDo&ja"), false);
 
-            fileHelper.writeToFile(settingsFile, "\n7", true); // Default length of output password(7)
+            // Default length of output password: 7.
+            fileHelper.writeToFile(settingsFile, "\n7", true);
         }
         catch (IOException e) {
             Log.e(LOGTAG, "Can't access file: ", e);

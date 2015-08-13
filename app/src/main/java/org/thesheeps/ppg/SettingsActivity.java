@@ -21,7 +21,6 @@ public class SettingsActivity extends Activity {
 
     private static final String salt = "The$HEPPS#1";
     private static final String LOGTAG = "PPG_SettingsActivity";
-    private static int maxWrongPassword = 3;
     String password;
 
     @Override

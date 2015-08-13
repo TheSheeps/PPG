@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">PPG</string>
-    <string name="app_full_name">Personal Password Generator</string>
+    <string name="app_full_name">Private Password Generator</string>
     <string name="action_settings">Settings</string>
 
     <!-- Main Activity -->
@@ -16,7 +16,7 @@
     <string name="settings_master_key">Master Secret Key:</string>
     <string name="settings_secret_length">Secret Length:</string>
     <string name="settings_save">Save Settings</string>
-    <string name="settings_password">Password</string>
+    <string name="settings_password">Login Password</string>
     <string name="settings_class_password_match">Passwords did not match.</string>
     <string name="settings_class_saved_successfully">Saved successfully</string>
     <!-- -->

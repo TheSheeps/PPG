@@ -8,8 +8,8 @@ android {
         applicationId "org.thesheeps.ppg"
         minSdkVersion 17
         targetSdkVersion 22
-        versionCode 4
-        versionName "1.0"
+        versionCode 5
+        versionName "1.0.1"
     }
     buildTypes {
         release {
