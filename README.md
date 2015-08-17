@@ -7,7 +7,8 @@ PPG is a super safe method to make it possible to generate and exchange password
 ##How to install?
 PPG is published in Google Play Store:
 [https://play.google.com/store/apps/details?id=org.thesheeps.ppg&hl=en](https://play.google.com/store/apps/details?id=org.thesheeps.ppg&hl=en).
-By the way, you can also get .apg file here, or download the source code, review and compile it yourself.
+
+By the way, you can also get [.apk file here](https://github.com/TheSheeps/PPG/releases), or download the source code, review and compile it yourself.
 
 ##Use-case A:
 Alice's Company wants to send their source codes to Bob's Company on daily basis. They will RAR it using a password. Also, Alice's Company wants to create a new Twitter account and send its password to Bob's Company. So, how to send its password safely? Answer: Using PPG!
